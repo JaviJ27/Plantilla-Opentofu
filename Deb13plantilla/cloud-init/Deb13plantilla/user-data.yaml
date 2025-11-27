@@ -1,0 +1,63 @@
+#cloud-config
+
+# ──────────────────────────────────────────────────────────────
+# Hostname
+# ──────────────────────────────────────────────────────────────
+hostname: Deb13plantilla
+#fqdn: Deb13plantilla.localdomain
+#manage_etc_hosts: true
+
+# ──────────────────────────────────────────────────────────────
+# Usuario inicial
+# ──────────────────────────────────────────────────────────────
+users:
+  - name: usuario
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin, sudo
+    shell: /bin/bash
+    lock_passwd: false
+    plaintext_passwd: usuario          # cloud-init lo hashea automáticamente
+    ssh-authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA/WRwQYdoC8TjYvTfam8j9eVOoOcC6h0dj82Ajh0Ld7 javier@DebianJJG
+
+chpasswd:
+  expire: false
+
+# ──────────────────────────────────────────────────────────────
+# Configuración regional (idioma, teclado y zona horaria (España)
+# ──────────────────────────────────────────────────────────────
+locale: es_ES.UTF-8
+timezone: Europe/Madrid
+
+keyboard:
+  layout: es
+  variant: ''
+
+# Paquetes necesarios para generar los locales
+packages:
+  - locales
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+# ──────────────────────────────────────────────────────────────
+# Comandos que se ejecutan al final del primer arranque
+# ──────────────────────────────────────────────────────────────
+runcmd:
+  # Generar locale español
+  - sudo sed -i 's/^# *es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen
+  - sudo locale-gen
+  - sudo update-locale LANG=es_ES.UTF-8 LANGUAGE=es_ES:es LC_ALL=es_ES.UTF-8
+  - export LANG=es_ES.UTF-8
+  - export LANGUAGE=es_ES:es
+
+  # Configurar teclado en consola
+  - echo "KEYMAP=es" > /etc/vconsole.conf
+  - debian-setup-keyboard   # en Debian 13 ya viene setupcon, pero por si acaso
+
+  # Pequeña limpieza opcional
+  - apt-get autoremove -y
+  - apt-get clean
+
+final_message: "== Plantilla Debian 13 lista – uptime: $UPTIME segundos =="
