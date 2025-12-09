@@ -16,12 +16,15 @@ users:
     groups: users, admin, sudo
     shell: /bin/bash
     lock_passwd: false
-    plaintext_passwd: usuario          # cloud-init lo hashea automáticamente
     ssh-authorized-keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA/WRwQYdoC8TjYvTfam8j9eVOoOcC6h0dj82Ajh0Ld7 javier@DebianJJG
 
+ssh_pwauth: true
+
 chpasswd:
   expire: false
+  list: |
+    usuario:usuario
 
 # ──────────────────────────────────────────────────────────────
 # Configuración regional (idioma, teclado y zona horaria (España)
@@ -61,3 +64,4 @@ runcmd:
   - apt-get clean
 
 final_message: "== Plantilla Debian 13 lista – uptime: $UPTIME segundos =="
+

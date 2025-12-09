@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"network","Source":"../../terraform/modules/network","Dir":"../../terraform/modules/network"},{"Key":"server","Source":"../../terraform/modules/vm","Dir":"../../terraform/modules/vm"}]}
