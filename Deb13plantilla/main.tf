@@ -1,5 +1,5 @@
 ########################################
-# No crear redes (módulo comentado)
+# Crear redes virtuales
 ########################################
 
  module "network" {
