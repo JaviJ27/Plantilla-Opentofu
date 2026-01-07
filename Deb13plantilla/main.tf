@@ -45,7 +45,7 @@ module "server" {
       )
 
       # Nuevo campo que tu módulo vm debe entender
-#      bridge_name    = lookup(net, "bridge", null)
+      bridge_name    = lookup(net, "bridge", null)
       wait_for_lease = lookup(net, "wait_for_lease", false)
     }
   ]
